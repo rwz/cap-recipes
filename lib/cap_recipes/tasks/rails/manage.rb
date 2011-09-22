@@ -38,13 +38,13 @@ Capistrano::Configuration.instance(true).load do
       desc "Clear file-based fragment and action caching"
       task :log, :roles => :app  do
         puts "Sweeping all the log files"
-        run "cd #{current_path} && #{sudo} rake log:clear RAILS_ENV=production"
+        try_sudo "cd #{current_path} && RAILS_ENV=#{rails_env} bundle exec rake log:clear"
       end
 
       desc "Clear file-based fragment and action caching"
       task :cache, :roles => :app do
         puts "Sweeping the fragment and action cache stores"
-        run "cd #{release_path} && #{sudo} rake tmp:cache:clear RAILS_ENV=production"
+        try_sudo "cd #{release_path} && RAILS_ENV=#{rails_env} bundle exec rake tmp:cache:clear"
       end
     end
   end
