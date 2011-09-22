@@ -2,22 +2,20 @@ require File.expand_path(File.dirname(__FILE__) + '/../utilities')
 
 Capistrano::Configuration.instance(true).load do
   set :delayed_script_path, "#{current_path}/script/delayed_job"
-  set :delayed_job_env, 'production'
   set :delayed_job_role, :app
-  set :base_ruby_path,   '/usr'
 
   namespace :delayed_job do
     desc "Start delayed_job process"
     task :start, :roles => delayed_job_role do
       utilities.with_role(delayed_job_role) do
-        try_sudo "RAILS_ENV=#{delayed_job_env} #{base_ruby_path}/bin/ruby #{delayed_script_path} start"
+        try_sudo "RAILS_ENV=#{rails_env} ruby #{delayed_script_path} start"
       end
     end
 
     desc "Stop delayed_job process"
     task :stop, :roles => delayed_job_role do
       utilities.with_role(delayed_job_role) do
-        try_sudo "RAILS_ENV=#{delayed_job_env} #{base_ruby_path}/bin/ruby #{delayed_script_path} stop"
+        try_sudo "RAILS_ENV=#{rails_env} ruby #{delayed_script_path} stop"
       end
     end
 
