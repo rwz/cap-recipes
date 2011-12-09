@@ -1,6 +1,4 @@
 Capistrano::Configuration.instance(true).load do
-  set :local_ping_path, 'http://localhost'
-
   namespace :rails do
     # ===============================================================
     # UTILITY TASKS
@@ -28,7 +26,7 @@ Capistrano::Configuration.instance(true).load do
     desc "Pings localhost to startup server"
     task :ping, :roles => :app do
       puts "Pinging the web server to start it"
-      run "wget -O /dev/null #{local_ping_path} 2>/dev/null"
+      run "wget -O /dev/null #{fetch(:local_ping_path, 'http://localhost')} 2>/dev/null"
     end
     
     # ===============================================================
